@@ -1,0 +1,60 @@
+name: Job Radar Daily
+on:
+  schedule:
+    - cron: '34 9 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: job-radar-daily
+  cancel-in-progress: false
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout default branch
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Scan job boards
+        id: scan
+        continue-on-error: true
+        env:
+          ROLE_KEYWORDS: 'Software Engineer,Product Manager,Designer'
+        run: python job_radar.py
+      - name: Upload results (including errors)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: job-radar-${{ github.run_number }}
+          path: |
+            output/report.md
+            output/jobs.csv
+            output/status.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Persist successful snapshots and current report
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for file in data/state.json output/report.md output/jobs.csv output/status.json; do
+            if [ -f "$file" ]; then git add "$file"; fi
+          done
+          if ! git diff --cached --quiet; then
+            git commit -m 'Job Radar daily snapshot [skip ci]'
+            git push
+          fi
+      - name: Mark scan unsuccessful if an ATS failed
+        if: steps.scan.outcome == 'failure'
+        run: exit 1
