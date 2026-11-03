@@ -1,29 +1,64 @@
-# Job Radar — 53 companies, public ATS JSON APIs
+# Job Radar — single consolidated repair (November 3, 2026)
 
-A daily no-HTML job monitor for 40 configured ATS boards and 13 explicitly unverified custom sources. All names and supplied tokens are included. **Tokens are assumptions, not guaranteed valid endpoints**. An `ERROR` status means the board must be validated or updated. API JSON is not intrinsically permanent, so monitoring is essential.
+**53 companies** retained: 42 configured on public JSON ATS feeds, 11 with no verified public JSON integration. This is not a guarantee that 42 feeds all return working jobs: a listed ATS token can move or its API can be temporarily unavailable. The workflow **will expose every source failure**. The complete list lives in `job_radar.py` under `SOURCES`, `NEEDS_ADAPTER`, `CUSTOM`.
 
-## Setup with GitHub web UI
+## Replace existing files — do NOT reset the baseline
 
-1. Create a new **public** repository (public standard GitHub-hosted runners are free within GitHub's published policies).
-2. Upload the files from this directory, including `.github/workflows/main.yml`. Keep the same paths. Make the repository's default branch `main` (or leave its existing default branch as-is).
-3. Open `Settings → Actions → General` and set **Workflow permissions** to **Read and write permissions**, if offered. Branch protection and organization policies may prohibit the bot's state commits.
-4. Open `Actions → Job Radar Daily → Run workflow` to run once manually. Wait for the Actions job to finish and inspect the artifact `job-radar-N` and repository `output/report.md`.
-5. Verify the **Source diagnostics** section. `NEEDS_VERIFIED_PUBLIC_API` is intentional for 13 custom companies. Other `ERROR`, `PARTIAL`, or `EMPTY` statuses require inspection; they are not proof of no openings.
-6. The schedule is `34 9 * * *`: every day at **09:34 UTC**, **15:04 India Standard Time**. Scheduled workflows run from the default branch; GitHub may delay or occasionally skip scheduled runs.
-7. Change the comma-separated `ROLE_KEYWORDS` in `.github/workflows/main.yml`, then commit. Checking is case-insensitive and looks at the **title**, not the job description. Default: Software Engineer, Product Manager, Designer.
+In your existing `agampreetkaurwalia-arch/Newonce` repository, replace the following files from this ZIP using GitHub's file editor or Git CLI:
 
-## What files you get
+- `job_radar.py`
+- `.github/workflows/main.yml`
+- `tests/test_job_radar.py`
+- `requirements.txt`
+- `README.md` (optional)
 
-- `output/report.md`: markdown job table plus complete status table
-- `output/jobs.csv`: matched new/verify jobs (empty CSV on no matches)
-- `output/status.json`: machine-readable source status and execution window
-- `data/state.json`: committed snapshot of previously seen IDs (created automatically)
+Do **not** delete or overwrite `data/state.json`: it was created by your previous successful polling and must survive the repair. Do not upload `job-radar-final/` as a nested directory; upload the **contents** of this folder in their matching paths. `.github/workflows/main.yml` must remain inside `.github/workflows/`.
 
-The first successful fetch of a source creates its baseline. Timestamp-confirmed new jobs can be reported on that first scan. Older, undated roles are not backfilled as new. On subsequent successful scans, newly observed undated job IDs are marked `RECENT_VERIFY_FIRST_SEEN`, **not confirmed posted within 24 hours**. Ashby `publishedAt` is publication time and may reflect republication. Greenhouse `updated_at` never proves creation date. An old reliable creation date is excluded.
+Run **Actions → Job Radar Daily → Run workflow**. It will run daily at 09:34 UTC (15:04 IST); GitHub cron timing is best-effort. Standard hosted Actions are free for public repositories under GitHub's current terms, not a contractual perpetual guarantee.
 
-Failed/possibly truncated sources **do not overwrite** previously saved source state. The scan runs with up to five concurrent sources, retries transient HTTP errors, paginates Lever, and raises a GitHub Actions failure for an API source failure or potentially truncated feed. The reports and healthy snapshots are still persisted before marking the run red.
+## Confirmed ATS migrations and fixes
 
-## Local tests and run
+- Automattic: Greenhouse `automatticcareers`
+- Appcues: Lever `appcues-2`
+- Panopto: Lever `panopto`
+- Kinsta: Lever `kinsta`
+- Sporty Group: Greenhouse `sportygroup`
+- Strike: Greenhouse `strike` (board observed, verify the live JSON response)
+- Omniscient Digital: Ashby `omniscient`
+- Float: Workable `floatjobs`
+- Modash: Workable `modash`
+- Zyte: Workable `zyte`
+- SafetyWing: Pinpoint `safetywing` using the **documented** public `/postings.json` feed
+- Prior corrections retained for Buffer, Chili Piper, Constructor, Contra, DuckDuckGo, Kit, TestGorilla, Toggl, Zapier (Ashby boards).
+
+Sources used for discovering these mappings include the employers' public ATS-hosted jobs pages. Board URLs for corrections are recorded in `VERIFIED_BOARD_EVIDENCE`. These are **board evidence**, not promises that every JSON feed is currently accessible.
+
+## JSON endpoints
+
+| Platform | Anonymous JSON feed | Notes |
+|---|---|---|
+| Greenhouse | `https://boards-api.greenhouse.io/v1/boards/{token}/jobs` | `first_published` if provided = publication, `updated_at` is not creation |
+| Lever | `https://api.lever.co/v0/postings/{token}?mode=json&limit=100&skip=0` | `createdAt` millisecond epoch, paginated |
+| Ashby | `https://api.ashbyhq.com/posting-api/job-board/{token}` | `publishedAt` is publication, not necessarily creation |
+| Workable | `https://www.workable.com/api/accounts/{token}` | Vendor-documented anonymous endpoint; zero jobs can be suspect |
+| Pinpoint | `https://{token}.pinpointhq.com/postings.json` | Vendor-documented anonymous posting JSON |
+
+## Output and interpretation
+
+- `output/report.md`: Markdown table plus source-by-source diagnostics.
+- `output/jobs.csv`: eligible role titles, company, location, evidence type, posting date, direct apply URL.
+- `output/status.json`: complete scan-health report for **all 53** companies.
+- `data/state.json`: per-board set of job IDs from successful scans. It is automatically committed by the workflow.
+
+**CONFIRMED_24H** means the job's **creation** timestamp is within UTC now minus 24 hours. **RECENT_VERIFY_PUBLICATION** means its publication timestamp is within that interval; publication might be a repost. **RECENT_VERIFY_FIRST_SEEN** means the ID first appeared between successful scans but its creation time is unknown. The first successful scan of a new ATS does **not** label every undated job newly posted. Old known published/created jobs are excluded even if a first-seen snapshot finds them. This is more conservative than treating `updated_at` as a creation date.
+
+The scan never advances state when an API call fails, Lever pagination caps out, or Workable appears truncated. When a board that had jobs suddenly returns an empty feed, it retains the previous state until a second consecutive valid empty poll.
+
+**Important limitation:** eleven companies do not currently expose a verified JSON integration in the package: Arkency, John Snow Labs, Livebird, Mailbird, MeetEdgar, ScaleMath, Scalerrs, Springworks, The Shelf, Tortuga, Pitch. Their presence in `status.json` means they are accounted for, **not** automatically monitored. Some have valid careers pages but no supported JSON feed. Springworks currently uses Zoho Recruit, which embeds JSON inside HTML instead of offering the requested stable public JSON endpoint. Unsupported source types are deliberately **not HTML-scraped**.
+
+There is no general mechanism that can guarantee all 53 companies expose a stable, public, authentication-free API. A `200 OK` response also does not establish that a board is complete or correct. Inspect the run results and source diagnostics. If a company changes ATS, its mapping requires new public evidence.
+
+## Local tests
 
 ```bash
 python -m pip install -r requirements.txt
@@ -31,15 +66,4 @@ python -m unittest discover -s tests -v
 python job_radar.py
 ```
 
-Run twice to verify first-seen suppression. Use `ROLE_KEYWORDS='Product Manager,Designer' python job_radar.py` to override default roles on macOS/Linux, or set the variable appropriately on Windows.
-
-## Limitations and necessary maintenance
-
-- **53 companies**, not 51: 17 Greenhouse + 14 Lever + 6 Ashby + 3 Workable + 13 custom.
-- All tokens were supplied by the requester and are not individually verified against live active company career pages. A valid-looking token may be outdated, a company may have migrated ATS, and an HTTP 200 response may represent a different employer.
-- The 13 custom sources are **not scanned** and are visibly flagged. No guessed endpoints or fragile HTML fallbacks.
-- Workable's public API can have limited output or rate-limit; feeds with 30+ jobs are conservatively flagged as possibly truncated, requiring verification.
-- Requiring an exact 24-hour creation date means undated, legitimate new postings appear in Verify rather than Confirmed. No system can reconstruct a missing historical creation timestamp with certainty.
-- The workflow is designed to be free for a public repository under GitHub's standard free public-runner offering; private-repository quotas, GitHub policy changes, API rate limits, or third-party services can affect cost/availability. No deployment can honestly promise 100% uptime or zero cost forever.
-- Schedule is best-effort, not precise-to-the-minute. To avoid missed slots, use a more frequent schedule if exact completeness matters. A 24-hour window with only daily runs can miss postings if the runner is delayed beyond the prior day.
-- No email is sent. See GitHub Actions artifacts, the committed report, or GitHub Actions failure notifications.
+Tests are offline; a separate real run in GitHub Actions verifies the remote APIs. The updated workflow uses Node 24-capable actions, pins the Ubuntu version for less surprising runner migrations, and preserves reports even when sources fail. You should expect a red run if one or more configured feeds remains broken: **this is a transparency/safety feature, not evidence that job matching itself is broken.**
