@@ -10,31 +10,31 @@ concurrency:
   cancel-in-progress: false
 jobs:
   scan:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
     steps:
-      - name: Checkout default branch
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v6
         with:
           persist-credentials: true
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
           cache: 'pip'
       - name: Install dependencies
-        run: pip install -r requirements.txt
-      - name: Run unit tests
+        run: python -m pip install -r requirements.txt
+      - name: Run offline unit tests
         run: python -m unittest discover -s tests -v
-      - name: Scan job boards
+      - name: Scan live public ATS feeds
         id: scan
         continue-on-error: true
         env:
-          ROLE_KEYWORDS: 'Software Engineer,Product Manager,Designer'
+          ROLE_KEYWORDS: 'Product Manager,Program Manager,Project Manager,Chief of Staff,Strategy,Strategic,Consultant,Consulting,Founder,Operations Manager,Business Operations,Partnerships,Software Engineer,Designer'
         run: python job_radar.py
-      - name: Upload results (including errors)
+      - name: Upload scan diagnostics
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: job-radar-${{ github.run_number }}
           path: |
@@ -43,18 +43,20 @@ jobs:
             output/status.json
           if-no-files-found: warn
           retention-days: 30
-      - name: Persist successful snapshots and current report
+      - name: Persist source state and reports
         if: always()
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          for file in data/state.json output/report.md output/jobs.csv output/status.json; do
-            if [ -f "$file" ]; then git add "$file"; fi
+          for f in data/state.json output/report.md output/jobs.csv output/status.json; do
+            if [ -f "$f" ]; then git add "$f"; fi
           done
           if ! git diff --cached --quiet; then
             git commit -m 'Job Radar daily snapshot [skip ci]'
             git push
           fi
-      - name: Mark scan unsuccessful if an ATS failed
+      - name: Fail if configured feeds errored
         if: steps.scan.outcome == 'failure'
-        run: exit 1
+        run: |
+          echo 'One or more configured feeds failed. Download output/status.json.'
+          exit 1
