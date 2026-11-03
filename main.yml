@@ -1,0 +1,62 @@
+name: Job Radar Daily
+on:
+  schedule:
+    - cron: '34 9 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: job-radar-daily
+  cancel-in-progress: false
+jobs:
+  scan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: true
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run offline unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Scan live public ATS feeds
+        id: scan
+        continue-on-error: true
+        env:
+          ROLE_KEYWORDS: 'Product Manager,Program Manager,Project Manager,Chief of Staff,Strategy,Strategic,Consultant,Consulting,Founder,Operations Manager,Business Operations,Partnerships,Software Engineer,Designer'
+        run: python job_radar.py
+      - name: Upload scan diagnostics
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: job-radar-${{ github.run_number }}
+          path: |
+            output/report.md
+            output/jobs.csv
+            output/status.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Persist source state and reports
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for f in data/state.json output/report.md output/jobs.csv output/status.json; do
+            if [ -f "$f" ]; then git add "$f"; fi
+          done
+          if ! git diff --cached --quiet; then
+            git commit -m 'Job Radar daily snapshot [skip ci]'
+            git push
+          fi
+      - name: Fail if configured feeds errored
+        if: steps.scan.outcome == 'failure'
+        run: |
+          echo 'One or more configured feeds failed. Download output/status.json.'
+          exit 1
