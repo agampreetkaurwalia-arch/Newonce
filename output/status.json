@@ -1,0 +1,377 @@
+{
+  "started_utc": "2026-11-03T04:35:55.308851+00:00",
+  "cutoff_utc": "2026-11-02T04:35:55.308851+00:00",
+  "sources": [
+    {
+      "company": "Alpaca",
+      "platform": "greenhouse",
+      "count": 72,
+      "matched_titles": 32,
+      "status": "OK"
+    },
+    {
+      "company": "Appcues",
+      "platform": "greenhouse",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://boards-api.greenhouse.io/v1/boards/appcues/jobs"
+    },
+    {
+      "company": "Arkency",
+      "platform": "custom",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "NEEDS_VERIFIED_PUBLIC_API"
+    },
+    {
+      "company": "Automattic",
+      "platform": "greenhouse",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://boards-api.greenhouse.io/v1/boards/automattic/jobs"
+    },
+    {
+      "company": "Awesome Motive",
+      "platform": "workable",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "OK"
+    },
+    {
+      "company": "Brave",
+      "platform": "greenhouse",
+      "count": 10,
+      "matched_titles": 1,
+      "status": "OK"
+    },
+    {
+      "company": "Buffer",
+      "platform": "lever",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.lever.co/v0/postings/buffer?mode=json&skip=0&limit=100"
+    },
+    {
+      "company": "Chili Piper",
+      "platform": "greenhouse",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://boards-api.greenhouse.io/v1/boards/chilipiper/jobs"
+    },
+    {
+      "company": "Constructor",
+      "platform": "greenhouse",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://boards-api.greenhouse.io/v1/boards/constructor/jobs"
+    },
+    {
+      "company": "Contra",
+      "platform": "lever",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.lever.co/v0/postings/contra?mode=json&skip=0&limit=100"
+    },
+    {
+      "company": "Doist",
+      "platform": "lever",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.lever.co/v0/postings/doist?mode=json&skip=0&limit=100"
+    },
+    {
+      "company": "DuckDuckGo",
+      "platform": "greenhouse",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://boards-api.greenhouse.io/v1/boards/duckduckgo/jobs"
+    },
+    {
+      "company": "Fingerprint",
+      "platform": "greenhouse",
+      "count": 19,
+      "matched_titles": 0,
+      "status": "OK"
+    },
+    {
+      "company": "Float",
+      "platform": "lever",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.lever.co/v0/postings/float?mode=json&skip=0&limit=100"
+    },
+    {
+      "company": "Ghost",
+      "platform": "ashby",
+      "count": 4,
+      "matched_titles": 0,
+      "status": "OK"
+    },
+    {
+      "company": "GitLab",
+      "platform": "greenhouse",
+      "count": 234,
+      "matched_titles": 17,
+      "status": "OK"
+    },
+    {
+      "company": "Groove",
+      "platform": "lever",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.lever.co/v0/postings/groovehq?mode=json&skip=0&limit=100"
+    },
+    {
+      "company": "John Snow Labs",
+      "platform": "custom",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "NEEDS_VERIFIED_PUBLIC_API"
+    },
+    {
+      "company": "Kinsta",
+      "platform": "ashby",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.ashbyhq.com/posting-api/job-board/kinsta"
+    },
+    {
+      "company": "Kit",
+      "platform": "lever",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.lever.co/v0/postings/kit-2?mode=json&skip=0&limit=100"
+    },
+    {
+      "company": "Livebird",
+      "platform": "custom",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "NEEDS_VERIFIED_PUBLIC_API"
+    },
+    {
+      "company": "Liveblocks",
+      "platform": "lever",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.lever.co/v0/postings/liveblocks?mode=json&skip=0&limit=100"
+    },
+    {
+      "company": "Mailbird",
+      "platform": "custom",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "NEEDS_VERIFIED_PUBLIC_API"
+    },
+    {
+      "company": "MailerLite",
+      "platform": "ashby",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.ashbyhq.com/posting-api/job-board/mailerlite"
+    },
+    {
+      "company": "MeetEdgar",
+      "platform": "custom",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "NEEDS_VERIFIED_PUBLIC_API"
+    },
+    {
+      "company": "Modash",
+      "platform": "lever",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.lever.co/v0/postings/modash?mode=json&skip=0&limit=100"
+    },
+    {
+      "company": "Namecheap",
+      "platform": "workable",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "OK"
+    },
+    {
+      "company": "Omniscient Digital",
+      "platform": "custom",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "NEEDS_VERIFIED_PUBLIC_API"
+    },
+    {
+      "company": "Panopto",
+      "platform": "greenhouse",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://boards-api.greenhouse.io/v1/boards/panopto/jobs"
+    },
+    {
+      "company": "Pitch",
+      "platform": "greenhouse",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://boards-api.greenhouse.io/v1/boards/pitch/jobs"
+    },
+    {
+      "company": "Plus",
+      "platform": "ashby",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.ashbyhq.com/posting-api/job-board/plus"
+    },
+    {
+      "company": "Podia",
+      "platform": "lever",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.lever.co/v0/postings/podia?mode=json&skip=0&limit=100"
+    },
+    {
+      "company": "Remote",
+      "platform": "greenhouse",
+      "count": 2,
+      "matched_titles": 0,
+      "status": "OK"
+    },
+    {
+      "company": "SafetyWing",
+      "platform": "greenhouse",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://boards-api.greenhouse.io/v1/boards/safetywing/jobs"
+    },
+    {
+      "company": "ScaleMath",
+      "platform": "custom",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "NEEDS_VERIFIED_PUBLIC_API"
+    },
+    {
+      "company": "Scalerrs",
+      "platform": "custom",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "NEEDS_VERIFIED_PUBLIC_API"
+    },
+    {
+      "company": "Shogun",
+      "platform": "greenhouse",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://boards-api.greenhouse.io/v1/boards/shogun/jobs"
+    },
+    {
+      "company": "SimpleTexting",
+      "platform": "workable",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "OK"
+    },
+    {
+      "company": "Smile",
+      "platform": "ashby",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.ashbyhq.com/posting-api/job-board/smile"
+    },
+    {
+      "company": "Sporty Group",
+      "platform": "custom",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "NEEDS_VERIFIED_PUBLIC_API"
+    },
+    {
+      "company": "Springworks",
+      "platform": "custom",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "NEEDS_VERIFIED_PUBLIC_API"
+    },
+    {
+      "company": "Storylane",
+      "platform": "lever",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.lever.co/v0/postings/storylane?mode=json&skip=0&limit=100"
+    },
+    {
+      "company": "Strike",
+      "platform": "custom",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "NEEDS_VERIFIED_PUBLIC_API"
+    },
+    {
+      "company": "Supabase",
+      "platform": "ashby",
+      "count": 69,
+      "matched_titles": 12,
+      "status": "OK"
+    },
+    {
+      "company": "TestGorilla",
+      "platform": "greenhouse",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://boards-api.greenhouse.io/v1/boards/testgorilla/jobs"
+    },
+    {
+      "company": "The Shelf",
+      "platform": "custom",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "NEEDS_VERIFIED_PUBLIC_API"
+    },
+    {
+      "company": "tl;dv",
+      "platform": "lever",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.lever.co/v0/postings/tldv?mode=json&skip=0&limit=100"
+    },
+    {
+      "company": "Toggl",
+      "platform": "lever",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.lever.co/v0/postings/toggl?mode=json&skip=0&limit=100"
+    },
+    {
+      "company": "Tortuga",
+      "platform": "custom",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "NEEDS_VERIFIED_PUBLIC_API"
+    },
+    {
+      "company": "Whereby",
+      "platform": "lever",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "OK"
+    },
+    {
+      "company": "YNAB",
+      "platform": "greenhouse",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://boards-api.greenhouse.io/v1/boards/youneedabudget/jobs"
+    },
+    {
+      "company": "Zapier",
+      "platform": "greenhouse",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://boards-api.greenhouse.io/v1/boards/zapier/jobs"
+    },
+    {
+      "company": "Zyte",
+      "platform": "lever",
+      "count": 0,
+      "matched_titles": 0,
+      "status": "ERROR: 404 Client Error: Not Found for url: https://api.lever.co/v0/postings/zyte?mode=json&skip=0&limit=100"
+    }
+  ]
+}
